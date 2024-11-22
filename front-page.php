@@ -1,5 +1,4 @@
 <?php
-
 $today = date('Ymd');
 
 $latestPosts = new WP_Query([

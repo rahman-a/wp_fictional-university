@@ -51,7 +51,7 @@ function page_banner(array $args = null)
 // university is the website name and could be any other name ex: swtle
 function load_university_files()
 {
-    wp_enqueue_script("university_google_map", "//maps.googleapis.com/maps/api/js?key=AIzaSyBwajd0kbqPhpshCXABGPOqoL3LT6ABB_Q");
+    wp_enqueue_script("university_google_map", "//maps.googleapis.com/maps/api/js?key={$_ENV['API_KEY']}");
     wp_enqueue_script("university_main_script", get_theme_file_uri("build/index.js"), array("jquery"), "1.0", true);
     wp_enqueue_style("university_base_style", get_theme_file_uri("build/index.css"));
     wp_enqueue_style("university_main_style", get_theme_file_uri("build/style-index.css"));
@@ -120,7 +120,7 @@ function client_query_manipulation(WP_Query $query, string $post_type, array $me
 
 function university_google_map_key($api)
 {
-    $api['key'] = "AIzaSyBwajd0kbqPhpshCXABGPOqoL3LT6ABB_Q";
+    $api['key'] = $_ENV['API_KEY'];
     return $api;
 }
 
