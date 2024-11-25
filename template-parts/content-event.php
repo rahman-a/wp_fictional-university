@@ -1,4 +1,4 @@
- <div class="event-summary">
+ <div class="event-summary mt-8">
      <a class="event-summary__date t-center" href="<?= the_permalink() ?>">
          <span class="event-summary__month"><?= format_date(get_field("event_date"), 'M') ?></span>
          <span class="event-summary__day"><?= format_date(get_field("event_date"), 'd') ?></span>

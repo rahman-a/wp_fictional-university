@@ -1,18 +1,7 @@
 <?php
 
-function dd($data)
-{
-    echo "<pre>";
-    var_dump($data);
-    echo "</pre>";
-    die();
-}
-
-function format_date($date, $formatter)
-{
-    $d = new DateTime($date);
-    return $d->format($formatter);
-}
+require get_theme_file_path("./inc/utils.php");
+require get_theme_file_path('./inc/wp-rest-api.php');
 
 
 function page_banner(array $args = null)
@@ -57,6 +46,9 @@ function load_university_files()
     wp_enqueue_style("university_main_style", get_theme_file_uri("build/style-index.css"));
     wp_enqueue_style("university_font_awesome", "//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
     wp_enqueue_style("university_font_roboto", "//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i");
+    wp_localize_script("university_main_script", "universityData", [
+        "root_url" => get_site_url()
+    ]);
 };
 
 add_action("wp_enqueue_scripts", "load_university_files");
@@ -125,3 +117,34 @@ function university_google_map_key($api)
 }
 
 add_filter("acf/fields/google_map/api", "university_google_map_key");
+
+/////////////// LIMITED SEARCH TO TITLE AND NOT BODY CONTENT /////////////
+function __search_by_title_only($search, $wp_query)
+{
+    global $wpdb;
+
+    if (empty($search))
+        return $search; // skip processing - no search term in query
+
+    $q = $wp_query->query_vars;
+    $n = ! empty($q['exact']) ? '' : '%';
+
+    $search = '';
+    $searchand = '';
+
+    foreach ((array) $q['search_terms'] as $term) {
+        $term = esc_sql(like_escape($term));
+        $search .= "{$searchand}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
+        $searchand = ' AND ';
+    }
+
+    if (! empty($search)) {
+        $search = " AND ({$search}) ";
+        if (! is_user_logged_in())
+            $search .= " AND ($wpdb->posts.post_password = '') ";
+    }
+
+    return $search;
+}
+
+add_filter('posts_search', '__search_by_title_only', 500, 2);

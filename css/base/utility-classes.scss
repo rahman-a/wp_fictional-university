@@ -81,7 +81,7 @@
 .container:after,
 .group:before,
 .group:after {
-  content: " ";
+  content: ' ';
   display: table;
 }
 
@@ -92,4 +92,31 @@
 
 .hide {
   display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
 }

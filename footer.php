@@ -1,6 +1,4 @@
 <!-- enqueue the javascript scripts in the footer -->
-<?= wp_footer() ?>
-
 <footer class="site-footer">
     <div class="site-footer__inner container container--narrow">
         <div class="group">
@@ -76,7 +74,20 @@
         </div>
     </div>
 </footer>
-
+<!-- search-overlay--active -->
+<div class="search-overlay" id="search-container">
+    <div class="search-overlay__top">
+        <div class="container">
+            <i class="fa fa-search search-overlay__icon" arai-hidden="true"></i>
+            <input type="text" class="search-term" id="search-term" placeholder="What are you looking for">
+            <i class="fa fa-window-close search-overlay__close" id="search-close" arai-hidden="true"></i>
+        </div>
+    </div>
+    <div class="container">
+        <div class="search-overlay__result" id="search-output"></div>
+    </div>
+</div>
+<?= wp_footer() ?>
 </body>
 
 </html>
