@@ -21,6 +21,7 @@ $latestEvents = new WP_Query([
     ]
 ]);
 
+
 get_header()
 
 
@@ -43,26 +44,28 @@ get_header()
 </div>
 
 <div class="full-width-split group">
-    <div class="full-width-split__one">
-        <div class="full-width-split__inner">
-            <h2 class="headline headline--small-plus t-center">
-                Upcoming Events
-            </h2>
+    <?php if ($latestEvents->have_posts()) : ?>
+        <div class="full-width-split__one">
+            <div class="full-width-split__inner">
+                <h2 class="headline headline--small-plus t-center">
+                    Upcoming Events
+                </h2>
 
-            <?php while ($latestEvents->have_posts()) :
-                $latestEvents->the_post();
-                get_template_part("template-parts/content-event");
-            endwhile ?>
-            <?php wp_reset_postdata(); ?>
-            <p class="t-center no-margin">
-                <!-- will use get_post_type_archive_link instead of site_url in case of 
+                <?php while ($latestEvents->have_posts()) :
+                    $latestEvents->the_post();
+                    get_template_part("template-parts/content-event");
+                endwhile ?>
+                <?php wp_reset_postdata(); ?>
+                <p class="t-center no-margin">
+                    <!-- will use get_post_type_archive_link instead of site_url in case of 
             change the slug in the future, this function will get the new slug -->
-                <a href="<?= get_post_type_archive_link("event") ?>" class="btn btn--blue">View All Events</a>
-            </p>
+                    <a href="<?= get_post_type_archive_link("event") ?>" class="btn btn--blue">View All Events</a>
+                </p>
+            </div>
         </div>
-    </div>
+    <?php endif ?>
     <div class="full-width-split__two">
-        <div class="full-width-split__inner">
+        <div class="full-width-split__inner" style="margin:<?php echo $latestEvents->have_posts() ? '0' : 'auto' ?>;">
             <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
 
             <?php while ($latestPosts->have_posts()) : ?>

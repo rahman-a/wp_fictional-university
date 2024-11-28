@@ -243,7 +243,7 @@
   flex-basis: auto;
   flex-grow: 1;
   border: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 10px;
   @include atSmall {
     font-size: 1.4rem;
@@ -256,7 +256,7 @@
   border-radius: 4px;
   outline: none;
   background-color: $mainBlue;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0 20px;
   margin-left: 10px;
 }
@@ -311,13 +311,13 @@
   opacity: 0;
 }
 
-.like-box[data-exists="yes"] .fa-heart {
+.like-box[data-liked='true'] .fa-heart {
   transform: scale(1);
   visibility: visible;
   opacity: 1;
 }
 
-.like-box[data-exists="yes"] .fa-heart-o {
+.like-box[data-liked='true'] .fa-heart-o {
   visibility: hidden;
   opacity: 0;
 }

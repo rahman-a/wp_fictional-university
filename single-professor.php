@@ -16,7 +16,48 @@ while (have_posts()) :
             <div class="one-third">
                 <?= the_post_thumbnail('portrait') ?>
             </div>
-            <div class="two-thirds"><?= the_content() ?></div>
+            <div class="two-thirds" style="display:flex; align-items: start; gap:2rem">
+                <div>
+                    <?= the_content() ?>
+                </div>
+                <?php
+                    $likes = new WP_Query([
+                        "post_type" => "like",
+                        "meta_query" => [
+                            [
+                                "key" => "liked_professors",
+                                "compare" => "=",
+                                "value" => get_the_ID()
+                            ]
+                        ]
+                    ]);
+                    $dataLiked = 'false';
+                    if (is_user_logged_in()) {
+                        $relatedLikes = new WP_Query([
+                            "author" => get_current_user_id(),
+                            "post_type" => "like",
+                            "meta_query" => [
+                                [
+                                    "key" => "liked_professors",
+                                    "compare" => "=",
+                                    "value" => get_the_ID()
+                                ]
+                            ]
+                        ]);
+
+                        $dataLiked = $relatedLikes->found_posts ? 'true' : 'false';
+                    }
+                    ?>
+                <span class="like-box" data-liked="<?= $dataLiked ?>" data-professor="<?= get_the_ID() ?>"
+                    data-like="<?= isset($likes->posts[0]) ? $likes->posts[0]->ID : '' ?>">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <span class="like-count">
+                        <?= $likes->found_posts ?>
+                    </span>
+                </span>
+
+            </div>
         </div>
 
     </div>
