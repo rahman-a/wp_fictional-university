@@ -19,16 +19,22 @@ class Like {
 
   async createLikeAction() {
     const professor = this.$likeBox.dataset.professor
-    const res = await this.createRequest(professor)
-    if (res.ok) {
+    try {
+      const res = await this.createRequest(professor)
+      console.log('Create Like...')
       this.renderLikeBox(true, { id: res.id })
+    } catch (error) {
+      console.log('Create Error: ', error.message)
     }
   }
   async deleteLikeAction() {
-    const like = this.$likeBox.dataset.like
-    const res = await this.deleteRequest(like)
-    if (res.ok) {
+    try {
+      const like = this.$likeBox.dataset.like
+      const res = await this.deleteRequest(like)
+      console.log('Delete Like...')
       this.renderLikeBox(false)
+    } catch (error) {
+      console.log('Delete Error: ', error.message)
     }
   }
 
@@ -62,8 +68,14 @@ class Like {
         body: data,
       }
     )
-    return await res.json()
+    const output = await res.json()
+    if (res.ok) {
+      return output
+    }
+
+    throw new Error(output.error)
   }
+
   async deleteRequest(like) {
     const data = new URLSearchParams()
     data.append('like', like)
@@ -77,7 +89,12 @@ class Like {
         body: data,
       }
     )
-    return await res.json()
+    const output = await res.json()
+    if (res.ok) {
+      return output
+    }
+    console.log('ouput: ', output)
+    throw new Error(output.error)
   }
 }
 

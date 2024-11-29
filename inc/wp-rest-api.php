@@ -165,7 +165,8 @@ function register_search_route($query)
 function create_new_like_route($query)
 {
     if (!is_user_logged_in()) {
-        return ["ok" => false, "message" => "you must be logged in to handle such request"];
+        http_response_code(401);
+        die(json_encode(["error" => "you must be logged in to handle such request"]));
     }
     $professor = get_post(sanitize_text_field($query['professor']));
 
@@ -181,7 +182,8 @@ function create_new_like_route($query)
         ]
     ]);
     if ($relatedLikes->found_posts && get_post_type($professor) === 'professor') {
-        return ['ok' => false, "message" => "You already liked this post"];
+        http_response_code(400);
+        die(json_encode(["error" => "You already liked this post"]));
     }
 
     $likeId = wp_insert_post([
@@ -194,19 +196,20 @@ function create_new_like_route($query)
         ]
     ]);
 
-    return ["ok" => true, "id" => $likeId];
+    return ["id" => $likeId];
 }
 
 function delete_new_like_route($query)
 {
     if (!is_user_logged_in()) {
         http_response_code(401);
-        return ["ok" => false, "message" => "you must be logged in to handle such request"];
+        die(json_encode(["error" => "you must be logged in to handle such request"]));
     }
     $likeId = sanitize_text_field($query['like']);
     if (get_current_user_id() === (int) get_post_field('post_author', $likeId) && get_post_type($likeId) === 'like') {
         $likeData = wp_delete_post($likeId, true);
-        return ["ok" => true, "id" => $likeData->ID];
+        return ["id" => $likeData->ID];
     }
-    return ["ok" => false, "message" => "Invalid like id"];
+    http_response_code(400);
+    die(json_encode(["error" => "Invalid like id"]));
 }
